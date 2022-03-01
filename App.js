@@ -23,6 +23,8 @@ import Illustration from './assets/icons/Illustration';
 import { NavigationContainer } from '@react-navigation/native';
 import Login from './src/Screens/Login';
 import SignUp from './src/Screens/SignUp';
+import Home from './src/Screens/Home'
+import BottomNavigationPages from './src/Screens/BottomNavigationPages';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -62,16 +64,18 @@ export default function App() {
         screenOptions={{
           headerShown: false,
           gestureEnabled: true,
-          transitionSpec:{
+          transitionSpec: {
             open: config,
-            close:config
+            close: config
           }
         }}
 
       >
-        <Stack.Screen name='Home' component={OnBoarding} />
+        <Stack.Screen name='Start' component={OnBoarding} />
         <Stack.Screen name='Login' component={Login} />
         <Stack.Screen name='SignUp' component={SignUp} />
+        <Stack.Screen name='Home' component={Home} />
+        <Stack.Screen name='BottomNavigationPages' component={BottomNavigationPages} />
       </Stack.Navigator>
     </NavigationContainer>
   );

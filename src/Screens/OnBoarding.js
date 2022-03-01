@@ -31,7 +31,7 @@ export default function OnBoarding({navigation}) {
                         borderRadius: 20, height: 60
                     }}
                     containerStyle={{ marginTop: '20%', width: 340, alignSelf: 'center' }}
-                    titleStyle={{ fontFamily: 'Roboto_400Regular', fontWeight: '' }}
+                    titleStyle={{ fontFamily: 'Roboto_400Regular' }}
                     onPress={() => navigation.navigate('Login')}
                 >
 
