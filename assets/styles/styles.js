@@ -181,5 +181,9 @@ export const styles = StyleSheet.create({
     },
     popularCardTextContentSubText:{
         fontFamily: 'Roboto_300Light', color: '#A7A7A7' 
+    },
+    detailsAvatarGroup:{
+        flexDirection: 'row',
+        justifyContent: 'center', top: '34%'
     }
 });

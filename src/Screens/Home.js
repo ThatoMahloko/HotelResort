@@ -1,10 +1,11 @@
-import { View, Text, TextInput, Image, SafeAreaView, ImageBackground, Animated, useWindowDimensions, ScrollView } from 'react-native'
+import { View, Text, TextInput, Image, SafeAreaView, ImageBackground, Animated, useWindowDimensions, ScrollView, TouchableOpacity } from 'react-native'
 import { Avatar, Card, Icon, Fab } from 'react-native-elements'
 import { styles } from '../../assets/styles/styles'
 import ReactPagerView from 'react-native-pager-view'
 import React, { useRef } from 'react'
 
-export default function Home() {
+export default function Home({ navigation }) {
+    const [filterValue, setFilterValue] = React.useState()
     return (
         <View style={styles.container}>
             <View style={styles.avatars} >
@@ -35,43 +36,51 @@ export default function Home() {
             </View>
 
             <View style={styles.homeAvataGroup}>
+
                 <View>
-                    <Avatar
-                        size={64}
-                        rounded
+                    <ImageBackground
+                        style={{ width: 64, height: 64, borderRadius: 32, marginLeft: '5%', bottom: '120%', alignSelf: 'center', }}
                         source={require('../../assets/images/avatarCity/gautengAvatar.jpg')}
-                        containerStyle={{ marginLeft: '5%', bottom: '120%', alignSelf: 'center', elevation: 10 }}
-                    />
+                        imageStyle={{ borderRadius: 32 }}
+                    >
+                        <TouchableOpacity style={{ width: 64, height: 64, }} onPress={() => setFilterValue('Gauteng')} />
+                    </ImageBackground>
                     <Text style={{ bottom: '120%', alignSelf: 'center' }}>Gauteng</Text>
                 </View>
+
                 <View>
-                    <Avatar
-                        size={64}
-                        rounded
+                    <ImageBackground
+                        style={{ width: 64, height: 64, borderRadius: 32, marginLeft: '5%', bottom: '120%', alignSelf: 'center', }}
                         source={require('../../assets/images/avatarCity/freeStateAvatar.jpg')}
-                        containerStyle={{ marginLeft: '5%', bottom: '120%', alignSelf: 'center', elevation: 10 }}
-                    />
+                        imageStyle={{ borderRadius: 32 }}
+                    >
+                        <TouchableOpacity style={{ width: 64, height: 64, }} onPress={() => setFilterValue('Free-State')} />
+                    </ImageBackground>
                     <Text style={{ bottom: '120%', alignSelf: 'center' }}>Free-State</Text>
                 </View>
+
                 <View>
-                    <Avatar
-                        size={64}
-                        rounded
+                    <ImageBackground
+                        style={{ width: 64, height: 64, borderRadius: 32, marginLeft: '5%', bottom: '120%', alignSelf: 'center', }}
                         source={require('../../assets/images/avatarCity/kznAvatar.jpg')}
-                        containerStyle={{ marginLeft: '5%', bottom: '120%', alignSelf: 'center', elevation: 10 }}
-                    />
+                        imageStyle={{ borderRadius: 32 }}
+                    >
+                        <TouchableOpacity style={{ width: 64, height: 64, }} onPress={() => setFilterValue('K-Z-N')} />
+                    </ImageBackground>
                     <Text style={{ bottom: '120%', alignSelf: 'center' }}>K-Z-N</Text>
                 </View>
                 <View>
-                    <Avatar
-                        size={64}
-                        rounded
+                    <ImageBackground
+                        style={{ width: 64, height: 64, borderRadius: 32, marginLeft: '5%', bottom: '120%', alignSelf: 'center', }}
                         source={require('../../assets/images/avatarCity/ncAvatar.jpg')}
-                        containerStyle={{ marginLeft: '5%', bottom: '120%', alignSelf: 'center', elevation: 10 }}
-                    />
+                        imageStyle={{ borderRadius: 32 }}
+                    >
+                        <TouchableOpacity style={{ width: 64, height: 64, }} onPress={() => setFilterValue('N-C')} />
+                    </ImageBackground>
                     <Text style={{ bottom: '120%', alignSelf: 'center' }}>N-C</Text>
                 </View>
             </View>
+
             <View style={styles.propertyIntroHeadingContainer}>
                 <Text style={styles.propertyIntroHeading}>Our Properties</Text>
                 <Text style={styles.propertyIntroHeadingViewAll}>View All</Text>
@@ -79,7 +88,7 @@ export default function Home() {
 
             <View style={{ flex: 1, height: 300, borderRadius: 20 }}>
                 <ReactPagerView style={styles.pagerView} initialPage={0} transitionStyle={'curl'}>
-                    <View style={{ height: 280 }}>
+                    <TouchableOpacity style={{ height: 280 }} onPress={() => navigation.navigate('Details')}>
                         <Card containerStyle={{ borderRadius: 20, margin: 10, height: 270 }} key={1}>
                             <Card.Image style={{ height: 180, borderRadius: 20 }}
                                 source={{
@@ -97,8 +106,8 @@ export default function Home() {
                                 <Text style={styles.cityName}>City Name</Text>
                             </View>
                         </Card>
-                    </View>
-                    <View style={{ height: 280 }}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ height: 280 }} onPress={() => navigation.navigate('Details')}>
                         <Card containerStyle={{ borderRadius: 20, margin: 10, height: 270 }} key={2}>
                             <Card.Image style={{ height: 180, borderRadius: 20 }}
                                 source={{
@@ -116,8 +125,8 @@ export default function Home() {
                                 <Text style={styles.cityName}>City Name</Text>
                             </View>
                         </Card>
-                    </View>
-                    <View style={{ height: 280 }}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ height: 280 }} onPress={() => navigation.navigate('Details')}>
                         <Card containerStyle={{ borderRadius: 20, margin: 10, height: 270 }} key={3}>
                             <Card.Image style={{ height: 180, borderRadius: 20 }}
                                 source={{
@@ -135,10 +144,10 @@ export default function Home() {
                                 <Text style={styles.cityName}>City Name</Text>
                             </View>
                         </Card>
-                    </View>
+                    </TouchableOpacity>
                 </ReactPagerView>
             </View>
-            
+
             <View style={styles.popularPorpertiesGroup}>
                 <Text style={styles.popularLcationsHeading}>Popular</Text>
                 <Text style={styles.popularLcationsHeadingViewAll}>View All</Text>
