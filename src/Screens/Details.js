@@ -1,5 +1,5 @@
 import { View, Text, TextInput, Image, SafeAreaView, ImageBackground, Animated, useWindowDimensions, ScrollView, TouchableOpacity, Share } from 'react-native'
-import { Avatar, Card, Icon, FAB, Button } from 'react-native-elements'
+import { Avatar, Card, Icon, FAB, Button, Badge } from 'react-native-elements'
 import { styles } from '../../assets/styles/styles'
 import React from 'react'
 
@@ -26,27 +26,31 @@ const Details = ({ navigation }) => {
             alert(error.message);
         }
     };
+
+    function toggleTextVisibilty() {
+        if (visible == false) {
+            setVisible(true)
+        } else {
+            setVisible(false)
+        }
+    }
+
     return (
-        <View style={styles.container}>
+        <ScrollView horizontal={false} contentContainerStyle={styles.container}>
             <View style={styles.avatars}>
                 <FAB
                     visible={visible}
                     icon={{ name: 'left', type: 'ant-design', color: '#FF9F45' }}
                     color="white"
-                    style={{ right: '30%' }}
+                    style={{ right: '35%' }}
                     onPress={() => navigation.goBack()}
                 />
-                <Text>Details</Text>
-                <FAB
-                    visible={visible}
-                    icon={{ name: 'bell', type: 'font-awesome', color: '#FF9F45' }}
-                    color="white"
-                    style={{ left: '30%' }}
-                />
+                <Text style={{right:'50%'}}>Details</Text>
+               
             </View>
-            <ImageBackground style={{ width: 320, height: 320, alignSelf: 'center' }}
+            <ImageBackground
                 source={{ uri: topImage }}
-                style={{ width: 390, height: 380, top: '4%', borderRadius: 20, padding: 20, paddingTop: '85%' }}
+                style={{ width: 390, height: 380, top: '4%', borderRadius: 20, padding: 20, paddingTop: '85%', width: 320, height: 320, alignSelf: 'center' }}
                 imageStyle={{ borderRadius: 20 }}
             >
                 <Text style={{ fontFamily: 'Roboto_300Light', color: '#FFF', fontSize: 18 }}>Misty Rock Resort</Text>
@@ -137,45 +141,73 @@ const Details = ({ navigation }) => {
                 />
             </View>
 
-            <View style={{ top: '8%' }}>
-                <Text style={{ fontFamily: 'Roboto_300Light', color: '#8B8B8B' }}>
-                    Ea non tempor et laborum proident laborum aliquip tempor aliquip excepteur
-                    aliqua culpa in eu. Dolore commodo eu velit commodo id id. Labore proident
-                    velit occaecat reprehenderit ullamco aliqua reprehenderit exercitation.
-                    nostrud mollit amet. Pariatur deserunt amet exercitation duis
-                </Text>
-                <Text style={{ fontFamily: 'Roboto_300Light', color: '#8B8B8B' }}>
-                    Read more...
-                </Text>
-            </View>
+            {
+                visible == false ?
 
-            <View style={{ flexDirection: 'row', top:'20%' }}>
+                    <ScrollView horizontal={false} style={{ top: '8%' }}>
+                        <Text numberOfLines={7} style={{ fontFamily: 'Roboto_300Light', color: '#8B8B8B' }}>
+                            Eae non tempor et laborum proident laborum aliquip tempor aliquip excepteur
+                            aliqua culpa in eu. Dolore commodo eu velit commodo id id. Labore proident
+                            velit occaecat reprehenderit ullamco aliqua reprehenderit exercitation.
+                            nostrud mollit amet. Pariatur deserunt amet exercitation duis
+                            Eae non tempor et laborum proident laborum aliquip tempor aliquip excepteur
+                            aliqua culpa in eu. Dolore commodo eu velit commodo id id. Labore proident
+                            velit occaecat reprehenderit ullamco aliqua reprehenderit exercitation.
+                            nostrud mollit amet. Pariatur deserunt amet exercitation duis
+                        </Text>
+                        <TouchableOpacity onPress={toggleTextVisibilty}>
+                            <Text style={{ fontFamily: 'Roboto_300Light', color: '#FF9F45' }}>
+                                Read more...
+                            </Text>
+                        </TouchableOpacity>
+                    </ScrollView>
+                    :
+                    <ScrollView horizontal={false} style={{ top: '8%', marginBottom: '5.5%' }}>
+                        <Text style={{ fontFamily: 'Roboto_300Light', color: '#8B8B8B' }}>
+                            Eae non tempor et laborum proident laborum aliquip tempor aliquip excepteur
+                            aliqua culpa in eu. Dolore commodo eu velit commodo id id. Labore proident
+                            velit occaecat reprehenderit ullamco aliqua reprehenderit exercitation.
+                            nostrud mollit amet. Pariatur deserunt amet exercitation duis
+                            Eae non tempor et laborum proident laborum aliquip tempor aliquip excepteur
+                            aliqua culpa in eu. Dolore commodo eu velit commodo id id. Labore proident
+                            velit occaecat reprehenderit ullamco aliqua reprehenderit exercitation.
+                            nostrud mollit amet. Pariatur deserunt amet exercitation duis
+                        </Text>
+                        <TouchableOpacity onPress={toggleTextVisibilty}>
+                            <Text style={{ fontFamily: 'Roboto_300Light', color: '#FF9F45' }}>
+                                Read Less...
+                            </Text>
+                        </TouchableOpacity>
+                    </ScrollView>
+            }
+
+            <View style={{ flexDirection: 'row', top: '10%' }}>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ fontFamily: 'Roboto_700Bold', color: 'black', fontSize:20 }}>$410</Text>
-                    <Text style={{ fontFamily: 'Roboto_700Bold', color: 'black', fontSize:20 }}>/Person</Text>
+                    <Text style={{ fontFamily: 'Roboto_700Bold', color: 'black', fontSize: 20 }}>$410</Text>
+                    <Text style={{ fontFamily: 'Roboto_700Bold', color: 'black', fontSize: 20 }}>/Person</Text>
                 </View>
                 <Button
-                icon={
-                    {
-                        type: 'font-awsome',
-                        name: 'chevron-right',
-                        color: 'white'
-                    }}
+                    icon={
+                        {
+                            type: 'font-awsome',
+                            name: 'chevron-right',
+                            color: 'white'
+                        }}
                     iconRight
-                title={'Continue'}
-                containerStyle={{
-                    width: 160,
-                    marginHorizontal: 50,
-                    marginVertical: 10,
-                    left: '90%',
-                    elevation: 6,
-                    bottom:'3%'
-                }}
-                titleStyle={{ fontFamily: 'Roboto_300Light', color: '#FFFF' }}
-                buttonStyle={{ backgroundColor: '#FF9F45' }}
-            />
+                    title={'Continue'}
+                    containerStyle={{
+                        width: 160,
+                        marginHorizontal: 50,
+                        marginVertical: 10,
+                        left: '90%',
+                        elevation: 6,
+                        bottom: '3%'
+                    }}
+                    titleStyle={{ fontFamily: 'Roboto_300Light', color: '#FFFF' }}
+                    buttonStyle={{ backgroundColor: '#FF9F45' }}
+                />
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
