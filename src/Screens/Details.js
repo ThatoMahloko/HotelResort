@@ -44,9 +44,9 @@ const Details = ({ navigation }) => {
                     style={{ left: '30%' }}
                 />
             </View>
-            <ImageBackground style={{ width: 320, height: 320, alignSelf: 'center' }}
+            <ImageBackground 
                 source={{ uri: topImage }}
-                style={{ width: 390, height: 380, top: '4%', borderRadius: 20, padding: 20, paddingTop: '85%' }}
+                style={{ width: 390, height: 380, top: '4%', borderRadius: 20, padding: 20, paddingTop: '85%',alignSelf: 'center' }}
                 imageStyle={{ borderRadius: 20 }}
             >
                 <Text style={{ fontFamily: 'Roboto_300Light', color: '#FFF', fontSize: 18 }}>Misty Rock Resort</Text>

@@ -1,9 +1,23 @@
-import { View, Text, TextInput } from 'react-native'
+import { View, Text, TextInput, ActivityIndicator } from 'react-native'
 import { styles } from '../../assets/styles/styles'
 import { Icon, Button } from 'react-native-elements'
-import React from 'react'
+import React, { useState } from 'react'
 
 export default function Login({ navigation }) {
+    const [loading, setLoading] = useState(false)
+
+    const load = () => {
+        setLoading(true)
+        setTimeout(function () {
+            navigation.navigate("BottomNavigationPages")
+            setLoading(false)
+
+        }, 2000)
+
+
+    }
+
+
     return (
         <View style={styles.container}>
             <View style={{ top: '40%' }}>
@@ -17,22 +31,27 @@ export default function Login({ navigation }) {
                     <Icon name='lock' type='ant-design' size={36} color='rgba(255,159,69,100)' />
                     <TextInput style={{ width: '85%', marginLeft: '5%' }} />
                 </View>
-                <Button style={styles.button} title={'Log In'} icon={
-                    {
-                        type: 'font-awsome',
-                        name: 'chevron-right',
-                        color: 'white'
-                    }}
-                    iconRight
-                    buttonStyle={{
-                        backgroundColor: 'rgba(255,159, 69,100)',
-                        borderRadius: 20, height: 60
-                    }}
-                    containerStyle={{ marginTop: '-15%', width: 340, alignSelf: 'center' }}
-                    titleStyle={{ fontFamily: 'Roboto_400Regular' }}
-                    onPress={() => navigation.navigate('BottomNavigationPages')}
-                >
-                </Button>
+                {
+                    loading == true ?
+                        <ActivityIndicator size={'large'} color="red" style={{ bottom: 50 }} />
+                        :
+                        <Button style={styles.button} title={'Log In'} icon={
+                            {
+                                type: 'font-awsome',
+                                name: 'chevron-right',
+                                color: 'white'
+                            }}
+                            iconRight
+                            buttonStyle={{
+                                backgroundColor: 'rgba(255,159, 69,100)',
+                                borderRadius: 20, height: 60
+                            }}
+                            containerStyle={{ marginTop: '-15%', width: 340, alignSelf: 'center' }}
+                            titleStyle={{ fontFamily: 'Roboto_400Regular' }}
+                            onPress={load}
+                        >
+                        </Button>
+                }
                 <View style={styles.bottomLinkTextGroup}>
                     <Text style={styles.illustrationPargraph} onPress={() => navigation.navigate('SignUp')}>
                         Dont't have an account?
