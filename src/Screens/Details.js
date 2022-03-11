@@ -4,7 +4,7 @@ import { styles } from '../../assets/styles/styles'
 import React from 'react'
 
 const Details = ({ navigation }) => {
-    const [visible, setVisible] = React.useState(true);
+    const [visible, setVisible] = React.useState(false);
     const [topImage, setTopImage] = React.useState('https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg');
 
     const onShare = async () => {
@@ -45,12 +45,12 @@ const Details = ({ navigation }) => {
                     style={{ right: '35%' }}
                     onPress={() => navigation.goBack()}
                 />
-                <Text style={{right:'50%'}}>Details</Text>
-               
+                <Text style={{ right: '50%', fontFamily: 'Roboto_300Light' }}>Details</Text>
+
             </View>
             <ImageBackground
                 source={{ uri: topImage }}
-                style={{ width: 390, height: 380, top: '4%', borderRadius: 20, padding: 20, paddingTop: '85%', width: 320, height: 320, alignSelf: 'center' }}
+                style={{ width: 390, height: 380, top: '4%', borderRadius: 20, padding: 20, paddingTop: '85%', alignSelf: 'center' }}
                 imageStyle={{ borderRadius: 20 }}
             >
                 <Text style={{ fontFamily: 'Roboto_300Light', color: '#FFF', fontSize: 18 }}>Misty Rock Resort</Text>

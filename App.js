@@ -26,6 +26,7 @@ import SignUp from './src/Screens/SignUp';
 import Home from './src/Screens/Home'
 import BottomNavigationPages from './src/Screens/BottomNavigationPages';
 import Details from './src/Screens/Details';
+import Notifications from './src/Screens/Notifications';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -72,12 +73,12 @@ export default function App() {
         }}
 
       >
-        <Stack.Screen name='Details' component={Details} />
         <Stack.Screen name='Start' component={OnBoarding} />
         <Stack.Screen name='Login' component={Login} />
         <Stack.Screen name='SignUp' component={SignUp} />
         <Stack.Screen name='Home' component={Home} />
         <Stack.Screen name='BottomNavigationPages' component={BottomNavigationPages} />
+        <Stack.Screen name='Details' component={Details} />
       </Stack.Navigator>
     </NavigationContainer>
   );
