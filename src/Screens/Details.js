@@ -39,7 +39,7 @@ const Details = ({ navigation }) => {
         <ScrollView horizontal={false} contentContainerStyle={styles.container}>
             <View style={styles.avatars}>
                 <FAB
-                    visible={visible}
+                    visible={true}
                     icon={{ name: 'left', type: 'ant-design', color: '#FF9F45' }}
                     color="white"
                     style={{ right: '35%' }}

@@ -27,6 +27,7 @@ import Home from './src/Screens/Home'
 import BottomNavigationPages from './src/Screens/BottomNavigationPages';
 import Details from './src/Screens/Details';
 import Notifications from './src/Screens/Notifications';
+import Bookmarks from './src/Screens/Bookmarks';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -79,6 +80,7 @@ export default function App() {
         <Stack.Screen name='Home' component={Home} />
         <Stack.Screen name='BottomNavigationPages' component={BottomNavigationPages} />
         <Stack.Screen name='Details' component={Details} />
+        <Stack.Screen name='Bookmarks' component={Bookmarks} />
       </Stack.Navigator>
     </NavigationContainer>
   );
