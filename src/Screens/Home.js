@@ -3,9 +3,20 @@ import { Avatar, Card, Icon, Fab } from 'react-native-elements'
 import { styles } from '../../assets/styles/styles'
 import ReactPagerView from 'react-native-pager-view'
 import React, { useRef } from 'react'
+import { db } from '../../config/firebase'
 
 export default function Home({ navigation }) {
     const [filterValue, setFilterValue] = React.useState()
+
+    React.useEffect(() => {
+        db.collection('Hotels').get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    console.log(doc.data())
+                })
+            })
+    }, [])
+
     return (
         <View style={styles.container}>
             <View style={styles.avatars} >
