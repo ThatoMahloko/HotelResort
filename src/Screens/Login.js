@@ -1,22 +1,48 @@
 import { View, Text, TextInput, ActivityIndicator } from 'react-native'
 import { styles } from '../../assets/styles/styles'
 import { Icon, Button } from 'react-native-elements'
+import { auth } from '../../config/firebase'
+import firebase from 'firebase'
 import React, { useState } from 'react'
 
 export default function Login({ navigation }) {
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = React.useState(false)
+    const [email, setEmail] = React.useState(String)
+    const [password, setPassword] = React.useState(String)
 
     const load = () => {
         setLoading(true)
         setTimeout(function () {
             navigation.navigate("BottomNavigationPages")
             setLoading(false)
-
+            console.log("hjhjhjh")
         }, 2000)
 
 
     }
 
+    const LoginAuth = () => {
+        console.log("hello", email+password)
+        setLoading(true)
+        setTimeout(function () {
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                }).catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.log(errorMessage, " ", errorCode)
+                })
+            setLoading(false)
+            if (auth.currentUser.email == email) {
+                navigation.navigate("BottomNavigationPages")
+            }else{
+                console.log('err')
+                auth.signOut
+            }
+        }, 2000)
+
+    }
 
     return (
         <View style={styles.container}>
@@ -25,11 +51,11 @@ export default function Login({ navigation }) {
 
                 <View style={styles.textInputEmail_Password}>
                     <Icon name='mail' type='ant-design' size={36} color='rgba(255,159,69,100)' />
-                    <TextInput style={{ width: '85%', marginLeft: '5%' }} />
+                    <TextInput keyboardType='email-address' style={{ width: '85%', marginLeft: '5%' }} onChangeText={(email) => setEmail(email)} />
                 </View>
                 <View style={styles.textInputEmail_Password}>
                     <Icon name='lock' type='ant-design' size={36} color='rgba(255,159,69,100)' />
-                    <TextInput style={{ width: '85%', marginLeft: '5%' }} />
+                    <TextInput style={{ width: '85%', marginLeft: '5%' }} onChangeText={(password) => setPassword(password)}  />
                 </View>
                 {
                     loading == true ?
@@ -48,7 +74,7 @@ export default function Login({ navigation }) {
                             }}
                             containerStyle={{ marginTop: '-15%', width: 340, alignSelf: 'center' }}
                             titleStyle={{ fontFamily: 'Roboto_400Regular' }}
-                            onPress={load}
+                            onPress={LoginAuth}
                         >
                         </Button>
                 }

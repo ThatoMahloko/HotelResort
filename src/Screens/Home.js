@@ -153,7 +153,7 @@ export default function Home({ navigation }) {
                 <Text style={styles.popularLcationsHeadingViewAll}>View All</Text>
             </View>
 
-            <ScrollView horizontal style={styles.popularScrollable}>
+            <ScrollView horizontal style={styles.popularScrollable} bouncesZoom={true}>
                 <View style={styles.popularCard}>
                     <Image style={styles.popularCalrdImage}
                         source={{
