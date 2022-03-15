@@ -3,15 +3,16 @@ import { Avatar, Card, Icon, FAB, Button, Badge } from 'react-native-elements'
 import { styles } from '../../assets/styles/styles'
 import React from 'react'
 
-const Details = ({ navigation }) => {
+const Details = ({ navigation, route }) => {
     const [visible, setVisible] = React.useState(false);
-    const [topImage, setTopImage] = React.useState('https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg');
+    const [topImage, setTopImage] = React.useState(route.params.images[4]);
+    const [shareUrl, setShareUrl] = React.useState()
 
     const onShare = async () => {
         try {
             const result = await Share.share({
                 message:
-                    'React Native | A framework for building native apps using React',
+                    shareUrl,
             });
             if (result.action === Share.sharedAction) {
                 if (result.activityType) {
@@ -35,6 +36,11 @@ const Details = ({ navigation }) => {
         }
     }
 
+    React.useState(() => {
+        console.log(route.params.url)
+        setShareUrl(route.params.url)
+    })
+
     return (
         <ScrollView horizontal={false} contentContainerStyle={styles.container}>
             <View style={styles.avatars}>
@@ -53,7 +59,7 @@ const Details = ({ navigation }) => {
                 style={{ width: 390, height: 380, top: '4%', borderRadius: 20, padding: 20, paddingTop: '85%', alignSelf: 'center' }}
                 imageStyle={{ borderRadius: 20 }}
             >
-                <Text style={{ fontFamily: 'Roboto_300Light', color: '#FFF', fontSize: 18 }}>Misty Rock Resort</Text>
+                <Text style={{ fontFamily: 'Roboto_300Light', color: '#FFF', fontSize: 18 }}>{route.params.name}</Text>
                 <View style={{ flexDirection: 'row' }}>
                     <Icon
                         type="entypo"
@@ -61,8 +67,8 @@ const Details = ({ navigation }) => {
                         color={'#FFFF'}
                     />
 
-                    <Text style={{ fontFamily: 'Roboto_300Light', color: '#FFF', fontSize: 16 }}>Misty Rock Resort</Text>
-                    <View style={{ flexDirection: 'row', left: '35%', bottom: '18%' }}>
+                    <Text style={{ fontFamily: 'Roboto_300Light', color: '#FFF', fontSize: 16 }}>Hotel Rock Resort</Text>
+                    <View style={{ flexDirection: 'row', left: '35%',bottom: '18%'}}>
                         <TouchableOpacity>
                             <Icon
                                 size={34}
@@ -86,31 +92,31 @@ const Details = ({ navigation }) => {
             <View style={styles.homeAvataGroup}>
                 <ImageBackground
                     style={{ width: 64, height: 64, borderRadius: 32, marginLeft: '5%', bottom: '22%', alignSelf: 'center', }}
-                    source={{ uri: 'https://images.pexels.com/photos/302769/pexels-photo-302769.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' }}
+                    source={{ uri: route.params.images[0] }}
                     imageStyle={{ borderRadius: 32 }}
                 >
-                    <TouchableOpacity style={{ width: 64, height: 64, }} onPress={() => setTopImage('https://images.pexels.com/photos/302769/pexels-photo-302769.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260')} />
+                    <TouchableOpacity style={{ width: 64, height: 64, }} onPress={() => setTopImage(route.params.images[0])} />
                 </ImageBackground>
                 <ImageBackground
                     style={{ width: 64, height: 64, borderRadius: 32, marginLeft: '5%', bottom: '22%', alignSelf: 'center', }}
-                    source={{ uri: 'https://images.pexels.com/photos/4179480/pexels-photo-4179480.jpeg?cs=srgb&dl=pexels-fede-roveda-4179480.jpg&fm=jpg' }}
+                    source={{ uri: route.params.images[1] }}
                     imageStyle={{ borderRadius: 32 }}
                 >
-                    <TouchableOpacity style={{ width: 64, height: 64, }} onPress={() => setTopImage('https://images.pexels.com/photos/4179480/pexels-photo-4179480.jpeg?cs=srgb&dl=pexels-fede-roveda-4179480.jpg&fm=jpg')} />
+                    <TouchableOpacity style={{ width: 64, height: 64, }} onPress={() => setTopImage(route.params.images[1])} />
                 </ImageBackground>
                 <ImageBackground
                     style={{ width: 64, height: 64, borderRadius: 32, marginLeft: '5%', bottom: '22%', alignSelf: 'center', }}
-                    source={{ uri: 'https://images.pexels.com/photos/1095826/pexels-photo-1095826.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' }}
+                    source={{ uri: route.params.images[2] }}
                     imageStyle={{ borderRadius: 32 }}
                 >
-                    <TouchableOpacity style={{ width: 64, height: 64, }} onPress={() => setTopImage('https://images.pexels.com/photos/1095826/pexels-photo-1095826.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260')} />
+                    <TouchableOpacity style={{ width: 64, height: 64, }} onPress={() => setTopImage(route.params.images[2])} />
                 </ImageBackground>
                 <ImageBackground
                     style={{ width: 64, height: 64, borderRadius: 32, marginLeft: '5%', bottom: '22%', alignSelf: 'center', }}
-                    source={{ uri: 'https://images.pexels.com/photos/681335/pexels-photo-681335.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' }}
+                    source={{ uri: route.params.images[3] }}
                     imageStyle={{ borderRadius: 32 }}
                 >
-                    <TouchableOpacity style={{ width: 64, height: 64, }} onPress={() => setTopImage('https://images.pexels.com/photos/681335/pexels-photo-681335.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260')} />
+                    <TouchableOpacity style={{ width: 64, height: 64, }} onPress={() => setTopImage(route.params.images[3])} />
                 </ImageBackground>
             </View>
 

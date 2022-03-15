@@ -7,15 +7,37 @@ import { db } from '../../config/firebase'
 
 export default function Home({ navigation }) {
     const [filterValue, setFilterValue] = React.useState()
+    const [hotelData, setHotelData] = React.useState([])
+    const [viewAllOurProperties, setViewAllOurProperties] = React.useState(false)
+    const [viewAllPopularProperties, setViewAllPopularProperties] = React.useState(false)
 
     React.useEffect(() => {
-        db.collection('Hotels').get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    console.log(doc.data())
-                })
-            })
+        db.collection('Hotels').onSnapshot((snapshot) => {
+            const dis = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setHotelData(dis);
+            console.log(hotelData)
+        });
     }, [])
+
+
+    function toggleVeiwAll() {
+        if (viewAllOurProperties == false) {
+            setViewAllOurProperties(true)
+        } else {
+            setViewAllOurProperties(false)
+        }
+    }
+
+    function toggleViewPopular() {
+        if (viewAllPopularProperties == false) {
+            setViewAllPopularProperties(true)
+        } else {
+            setViewAllPopularProperties(false)
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -92,121 +114,306 @@ export default function Home({ navigation }) {
                 </View>
             </View>
 
-            <View style={styles.propertyIntroHeadingContainer}>
-                <Text style={styles.propertyIntroHeading}>Our Properties</Text>
-                <Text style={styles.propertyIntroHeadingViewAll}>View All</Text>
-            </View>
 
-            <View style={{ flex: 1, height: 300, borderRadius: 20 }}>
-                <ReactPagerView style={styles.pagerView} initialPage={0} transitionStyle={'curl'}>
-                    <TouchableOpacity style={{ height: 280 }} onPress={() => navigation.navigate('Details')}>
-                        <Card containerStyle={{ borderRadius: 20, margin: 10, height: 270 }} key={1}>
-                            <Card.Image style={{ height: 180, borderRadius: 20 }}
-                                source={{
-                                    uri:
-                                        'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
-                                }}
-                            />
-                            <Text style={styles.cardCitytext}>Misty Rock Resort</Text>
-                            <View style={styles.cityCardDetails}>
-                                <Icon
-                                    type="entypo"
-                                    name='location-pin'
-                                    color={'#FF9F45'}
-                                />
-                                <Text style={styles.cityName}>City Name</Text>
+
+            {
+                viewAllPopularProperties == false ?
+                    <>
+                        {
+                            viewAllOurProperties == false ?
+                                <>
+
+                                    {
+                                        < View style={{ flex: 1, height: 300, borderRadius: 20 }}>
+
+                                            <TouchableOpacity style={styles.propertyIntroHeadingContainer} onPress={toggleVeiwAll}>
+                                                <Text style={styles.propertyIntroHeading}>Our Properties</Text>
+                                                <Text style={styles.propertyIntroHeadingViewAll}>View All</Text>
+                                            </TouchableOpacity>
+
+                                            <ReactPagerView style={styles.pagerView} initialPage={0} transitionStyle={'curl'}>
+                                                {
+                                                    hotelData.map((data, k) => {
+                                                        return (
+                                                            <TouchableOpacity style={{ height: 280 }} onPress={() => navigation.navigate('Details', data)} key={data.id}>
+                                                                <Card containerStyle={{ borderRadius: 20, margin: 10, height: 270 }} key={1}>
+                                                                    <Card.Image style={{ height: 180, borderRadius: 20 }}
+                                                                        source={{
+                                                                            uri:
+                                                                                data.images[0],
+                                                                        }}
+                                                                    />
+                                                                    <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.cardCitytext}>{data.name}</Text>
+                                                                    <View style={styles.cityCardDetails}>
+                                                                        <Icon
+                                                                            type="entypo"
+                                                                            name='location-pin'
+                                                                            color={'#FF9F45'}
+                                                                        />
+                                                                        <Text style={styles.cityName}>{data.state}</Text>
+                                                                    </View>
+                                                                </Card>
+                                                            </TouchableOpacity>
+                                                        )
+                                                    })
+                                                }
+                                            </ReactPagerView>
+                                        </View>
+                                    }
+
+                                    <TouchableOpacity style={{ flexDirection: 'row', right: '14%', top: '45%' }} onPress={toggleViewPopular}>
+                                        <Text style={styles.popularLcationsHeading}>Popular</Text>
+                                    </TouchableOpacity>
+
+                                    <ScrollView horizontal style={{ top: '45%'}} bouncesZoom={true}>
+                                        <View style={styles.popularCard}>
+                                            <Image style={styles.popularCalrdImage}
+                                                source={{
+                                                    uri:
+                                                        'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
+                                                }} />
+
+                                            <View style={styles.popularcardImageTextContent}>
+                                                <Text>Misty Rock Resort</Text>
+                                                <View style={styles.popularCardIcon}>
+                                                    <Icon
+                                                        type="entypo"
+                                                        name='location-pin'
+                                                        color={'#FF9F45'}
+                                                    />
+                                                    <Text style={styles.popularCardTextContentSubText}>K-Z-N</Text>
+                                                </View>
+                                            </View>
+                                        </View>
+
+                                        <View style={styles.popularCard}>
+                                            <Image style={styles.popularCalrdImage}
+                                                source={{
+                                                    uri:
+                                                        'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
+                                                }} />
+
+                                            <View style={styles.popularcardImageTextContent}>
+                                                <Text>Misty Rock Resort</Text>
+                                                <View style={styles.popularCardIcon}>
+                                                    <Icon
+                                                        type="entypo"
+                                                        name='location-pin'
+                                                        color={'#FF9F45'}
+                                                    />
+                                                    <Text style={styles.popularCardTextContentSubText}>K-Z-N</Text>
+                                                </View>
+                                            </View>
+                                        </View>
+                                    </ScrollView>
+                                </>
+                                :
+                                <>
+                                    <TouchableOpacity style={styles.propertyIntroHeadingContainer} onPress={toggleVeiwAll}>
+                                        <Text style={styles.propertyIntroHeading}>Our Properties</Text>
+                                        <Text style={styles.propertyIntroHeadingViewAll}>View All</Text>
+                                    </TouchableOpacity>
+                                    <ScrollView horizontal={false} style={{ marginTop: 20 }}>
+                                        {
+                                            hotelData.map((data, k) => {
+                                                return (
+                                                    <TouchableOpacity style={{ height: 280 }} onPress={() => navigation.navigate('Details', data)} key={data.id}>
+                                                        <Card containerStyle={{ borderRadius: 20, margin: 10, height: 270 }} key={1}>
+                                                            <Card.Image style={{ height: 180, borderRadius: 20 }}
+                                                                source={{
+                                                                    uri:
+                                                                        data.images[0],
+                                                                }}
+                                                            />
+                                                            <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.cardCitytext}>{data.name}</Text>
+                                                            <View style={styles.cityCardDetails}>
+                                                                <Icon
+                                                                    type="entypo"
+                                                                    name='location-pin'
+                                                                    color={'#FF9F45'}
+                                                                />
+                                                                <Text style={styles.cityName}>{data.state}</Text>
+                                                            </View>
+                                                        </Card>
+                                                    </TouchableOpacity>
+                                                )
+                                            })
+                                        }
+                                    </ScrollView>
+                                </>
+                        }
+
+                    </>
+                    :
+                    <>
+                        <TouchableOpacity style={styles.propertyIntroHeadingContainer} onPress={toggleViewPopular}>
+                            <Text style={styles.propertyIntroHeading}>Our Properties</Text>
+                            <Text style={styles.propertyIntroHeadingViewAll}>View All</Text>
+                        </TouchableOpacity>
+
+                        <ScrollView horizontal={false} style={{ top: '3%' }} bouncesZoom={true}>
+                            <View style={styles.popularCard}>
+                                <Image style={styles.popularCalrdImage}
+                                    source={{
+                                        uri:
+                                            'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
+                                    }} />
+
+                                <View style={styles.popularcardImageTextContent}>
+                                    <Text>Misty Rock Resort</Text>
+                                    <View style={styles.popularCardIcon}>
+                                        <Icon
+                                            type="entypo"
+                                            name='location-pin'
+                                            color={'#FF9F45'}
+                                        />
+                                        <Text style={styles.popularCardTextContentSubText}>K-Z-N</Text>
+                                    </View>
+                                </View>
                             </View>
-                        </Card>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ height: 280 }} onPress={() => navigation.navigate('Details')}>
-                        <Card containerStyle={{ borderRadius: 20, margin: 10, height: 270 }} key={2}>
-                            <Card.Image style={{ height: 180, borderRadius: 20 }}
-                                source={{
-                                    uri:
-                                        'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
-                                }}
-                            />
-                            <Text style={styles.cardCitytext}>Misty Rock Resort</Text>
-                            <View style={styles.cityCardDetails}>
-                                <Icon
-                                    type="entypo"
-                                    name='location-pin'
-                                    color={'#FF9F45'}
-                                />
-                                <Text style={styles.cityName}>City Name</Text>
+
+                            <View style={styles.popularCard}>
+                                <Image style={styles.popularCalrdImage}
+                                    source={{
+                                        uri:
+                                            'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
+                                    }} />
+
+                                <View style={styles.popularcardImageTextContent}>
+                                    <Text>Misty Rock Resort</Text>
+                                    <View style={styles.popularCardIcon}>
+                                        <Icon
+                                            type="entypo"
+                                            name='location-pin'
+                                            color={'#FF9F45'}
+                                        />
+                                        <Text style={styles.popularCardTextContentSubText}>K-Z-N</Text>
+                                    </View>
+                                </View>
                             </View>
-                        </Card>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ height: 280 }} onPress={() => navigation.navigate('Details')}>
-                        <Card containerStyle={{ borderRadius: 20, margin: 10, height: 270 }} key={3}>
-                            <Card.Image style={{ height: 180, borderRadius: 20 }}
-                                source={{
-                                    uri:
-                                        'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
-                                }}
-                            />
-                            <Text style={styles.cardCitytext}>Misty Rock Resort</Text>
-                            <View style={styles.cityCardDetails}>
-                                <Icon
-                                    type="entypo"
-                                    name='location-pin'
-                                    color={'#FF9F45'}
-                                />
-                                <Text style={styles.cityName}>City Name</Text>
+
+                            <View style={styles.popularCard}>
+                                <Image style={styles.popularCalrdImage}
+                                    source={{
+                                        uri:
+                                            'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
+                                    }} />
+
+                                <View style={styles.popularcardImageTextContent}>
+                                    <Text>Misty Rock Resort</Text>
+                                    <View style={styles.popularCardIcon}>
+                                        <Icon
+                                            type="entypo"
+                                            name='location-pin'
+                                            color={'#FF9F45'}
+                                        />
+                                        <Text style={styles.popularCardTextContentSubText}>K-Z-N</Text>
+                                    </View>
+                                </View>
                             </View>
-                        </Card>
-                    </TouchableOpacity>
-                </ReactPagerView>
-            </View>
 
-            <View style={styles.popularPorpertiesGroup}>
-                <Text style={styles.popularLcationsHeading}>Popular</Text>
-                <Text style={styles.popularLcationsHeadingViewAll}>View All</Text>
-            </View>
+                            <View style={styles.popularCard}>
+                                <Image style={styles.popularCalrdImage}
+                                    source={{
+                                        uri:
+                                            'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
+                                    }} />
 
-            <ScrollView horizontal style={styles.popularScrollable} bouncesZoom={true}>
-                <View style={styles.popularCard}>
-                    <Image style={styles.popularCalrdImage}
-                        source={{
-                            uri:
-                                'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
-                        }} />
+                                <View style={styles.popularcardImageTextContent}>
+                                    <Text>Misty Rock Resort</Text>
+                                    <View style={styles.popularCardIcon}>
+                                        <Icon
+                                            type="entypo"
+                                            name='location-pin'
+                                            color={'#FF9F45'}
+                                        />
+                                        <Text style={styles.popularCardTextContentSubText}>K-Z-N</Text>
+                                    </View>
+                                </View>
+                            </View>
 
-                    <View style={styles.popularcardImageTextContent}>
-                        <Text>Misty Rock Resort</Text>
-                        <View style={styles.popularCardIcon}>
-                            <Icon
-                                type="entypo"
-                                name='location-pin'
-                                color={'#FF9F45'}
-                            />
-                            <Text style={styles.popularCardTextContentSubText}>K-Z-N</Text>
-                        </View>
-                    </View>
-                </View>
+                            <View style={styles.popularCard}>
+                                <Image style={styles.popularCalrdImage}
+                                    source={{
+                                        uri:
+                                            'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
+                                    }} />
 
-                <View style={styles.popularCard}>
-                    <Image style={styles.popularCalrdImage}
-                        source={{
-                            uri:
-                                'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
-                        }} />
+                                <View style={styles.popularcardImageTextContent}>
+                                    <Text>Misty Rock Resort</Text>
+                                    <View style={styles.popularCardIcon}>
+                                        <Icon
+                                            type="entypo"
+                                            name='location-pin'
+                                            color={'#FF9F45'}
+                                        />
+                                        <Text style={styles.popularCardTextContentSubText}>K-Z-N</Text>
+                                    </View>
+                                </View>
+                            </View>
 
-                    <View style={styles.popularcardImageTextContent}>
-                        <Text>Misty Rock Resort</Text>
-                        <View style={styles.popularCardIcon}>
-                            <Icon
-                                type="entypo"
-                                name='location-pin'
-                                color={'#FF9F45'}
-                            />
-                            <Text style={styles.popularCardTextContentSubText}>K-Z-N</Text>
-                        </View>
-                    </View>
-                </View>
-            </ScrollView>
+                            <View style={styles.popularCard}>
+                                <Image style={styles.popularCalrdImage}
+                                    source={{
+                                        uri:
+                                            'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
+                                    }} />
 
-        </View>
+                                <View style={styles.popularcardImageTextContent}>
+                                    <Text>Misty Rock Resort</Text>
+                                    <View style={styles.popularCardIcon}>
+                                        <Icon
+                                            type="entypo"
+                                            name='location-pin'
+                                            color={'#FF9F45'}
+                                        />
+                                        <Text style={styles.popularCardTextContentSubText}>K-Z-N</Text>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={styles.popularCard}>
+                                <Image style={styles.popularCalrdImage}
+                                    source={{
+                                        uri:
+                                            'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
+                                    }} />
+
+                                <View style={styles.popularcardImageTextContent}>
+                                    <Text>Misty Rock Resort</Text>
+                                    <View style={styles.popularCardIcon}>
+                                        <Icon
+                                            type="entypo"
+                                            name='location-pin'
+                                            color={'#FF9F45'}
+                                        />
+                                        <Text style={styles.popularCardTextContentSubText}>K-Z-N</Text>
+                                    </View>
+                                </View>
+                            </View>
+
+                            <View style={styles.popularCard}>
+                                <Image style={styles.popularCalrdImage}
+                                    source={{
+                                        uri:
+                                            'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
+                                    }} />
+
+                                <View style={styles.popularcardImageTextContent}>
+                                    <Text>Misty Rock Resort</Text>
+                                    <View style={styles.popularCardIcon}>
+                                        <Icon
+                                            type="entypo"
+                                            name='location-pin'
+                                            color={'#FF9F45'}
+                                        />
+                                        <Text style={styles.popularCardTextContentSubText}>K-Z-N</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </ScrollView>
+                    </>
+            }
+        </View >
     )
 }
 

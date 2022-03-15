@@ -142,6 +142,7 @@ export const styles = StyleSheet.create({
     popularLcationsHeading: {
         fontFamily: 'Roboto_300Light', fontWeight: 'normal',
         fontSize: 27,
+        right:'50%'
     },
     popularLcationsHeadingViewAll: {
         left: '467%',
