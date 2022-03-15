@@ -55,7 +55,7 @@ export default function Login({ navigation }) {
                 </View>
                 <View style={styles.textInputEmail_Password}>
                     <Icon name='lock' type='ant-design' size={36} color='rgba(255,159,69,100)' />
-                    <TextInput style={{ width: '85%', marginLeft: '5%' }} onChangeText={(password) => setPassword(password)}  />
+                    <TextInput secureTextEntry={true} style={{ width: '85%', marginLeft: '5%' }} onChangeText={(password) => setPassword(password)}  />
                 </View>
                 {
                     loading == true ?
