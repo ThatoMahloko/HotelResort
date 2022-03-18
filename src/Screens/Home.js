@@ -15,7 +15,7 @@ export default function Home({ navigation }) {
     const [searchInput, setSearchInput] = React.useState()
     const [textSearch, setTextSearch] = React.useState(false)
     const [test, setTest] = React.useState()
-
+var yhotel
     React.useEffect(() => {
         db.collection('Hotels').onSnapshot((snapshot) => {
             const dis = snapshot.docs.map((doc) => ({
@@ -47,11 +47,13 @@ export default function Home({ navigation }) {
     function clearFilter() {
         setFilterValue("")
     }
+    {
     var usey
-    usey = searchInput
-    var yhotel
-    yhotel = usey
-
+    
+    usey == searchInput;
+    
+    yhotel !== "";
+    }
 
 
     function startSearch(saerch, hdata) {

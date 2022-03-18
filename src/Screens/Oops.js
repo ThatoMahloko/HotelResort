@@ -4,7 +4,7 @@ import Outdoor from '../../assets/icons/Outdoor'
 import { Avatar, FAB } from 'react-native-elements'
 import React from 'react'
 
-export default function Oops() {
+export default function Oops({navigation}) {
   return (
     <View style={styles.container}>
       <View style={styles.avatars}>
