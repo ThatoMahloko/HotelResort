@@ -1,6 +1,7 @@
 import { View, Text, TextInput, Image, SafeAreaView, ImageBackground, Animated, useWindowDimensions, ScrollView, TouchableOpacity, Share } from 'react-native'
 import { Avatar, Card, Icon, FAB, Button, Badge, ListItem } from 'react-native-elements'
 import { styles } from '../../assets/styles/styles'
+import { db } from '../../config/firebase'
 import React from 'react'
 
 const Details = ({ navigation, route }) => {
@@ -15,6 +16,8 @@ const Details = ({ navigation, route }) => {
     const [disabledReview, setDisabledReview] = React.useState(false)
     const [disabledFascilities, setDisabledFascilities] = React.useState(false)
     const [toggleFascilities, setToggleFascilities] = React.useState(false)
+    const [document, setDocument] = React.useState([])
+    const [documentObject, setDocumentObject] = React.useState([])
 
     const onShare = async () => {
         try {
@@ -90,6 +93,24 @@ const Details = ({ navigation, route }) => {
             setToggleFascilities(false)
         }
     }
+
+    React.useEffect(() => {
+        db.collection('Hotels').doc(route.params.id)
+            .get().then((doc) => {
+                if (doc.exists) {
+                    setDocument(doc.data())
+                    console.log(doc.data())
+                } else {
+                    console.log("No such document")
+                }
+            }).catch((error) => {
+                console.log('Error getting document')
+            })
+
+        setDocumentObject(route.params)                    
+        console.log(documentObject)
+
+    })
 
     return (
         <ScrollView horizontal={false} contentContainerStyle={styles.container}>
@@ -376,31 +397,31 @@ const Details = ({ navigation, route }) => {
                     :
                     <View style={{ height: 140, width: '90%', elevation: 6, backgroundColor: '#FFFF', borderRadius: 20, justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
 
-                        <View style={{ alignItems: 'center', margin:10 }}>
+                        <View style={{ alignItems: 'center', margin: 10 }}>
                             <Icon name='bed'
                                 type='font-awesome' />
                             <Text>4 beds</Text>
                         </View>
 
-                        <View style={{ alignItems: 'center', margin:10 }}>
+                        <View style={{ alignItems: 'center', margin: 10 }}>
                             <Icon name='shower'
                                 type='font-awesome' />
                             <Text>shower</Text>
                         </View>
 
-                        <View style={{ alignItems: 'center', margin:10 }}>
+                        <View style={{ alignItems: 'center', margin: 10 }}>
                             <Icon name='wifi'
                                 type='font-awesome' />
                             <Text>wifi/5G</Text>
                         </View>
 
-                        <View style={{ alignItems: 'center', margin:10 }}>
+                        <View style={{ alignItems: 'center', margin: 10 }}>
                             <Icon name='pool'
                                 type='ant-desig' />
                             <Text>pool</Text>
                         </View>
 
-                        <View style={{ alignItems: 'center', margin:10 }}>
+                        <View style={{ alignItems: 'center', margin: 10 }}>
                             <Icon name='poop'
                                 type='font-awesome' />
                             <Text>dining</Text>
@@ -433,6 +454,7 @@ const Details = ({ navigation, route }) => {
                     }}
                     titleStyle={{ fontFamily: 'Roboto_300Light', color: '#FFFF' }}
                     buttonStyle={{ backgroundColor: '#FF9F45' }}
+                    onPress={() => navigation.navigate("Booking", documentObject)}
                 />
             </View>
         </ScrollView>
