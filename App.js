@@ -30,6 +30,7 @@ import Notifications from './src/Screens/Notifications';
 import Bookmarks from './src/Screens/Bookmarks';
 import Oops from './src/Screens/Oops';
 import Booking from './src/Screens/Booking';
+import BookingSuccessFull from './src/Screens/BookingSuccessFull';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -85,6 +86,7 @@ export default function App() {
         <Stack.Screen name='Bookmarks' component={Bookmarks} />
         <Stack.Screen name='Oops' component={Oops} />
         <Stack.Screen name='Booking' component={Booking} />
+        <Stack.Screen name='BookingSuccessFull' component={BookingSuccessFull} />
       </Stack.Navigator>
     </NavigationContainer>
   );

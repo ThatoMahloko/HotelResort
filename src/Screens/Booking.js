@@ -1,14 +1,31 @@
 import { View, Text, ImageBackground, TouchableOpacity } from 'react-native'
-import { Icon, FAB,Button } from 'react-native-elements'
+import { Icon, FAB, Button } from 'react-native-elements'
 import { styles } from '../../assets/styles/styles'
-import { db } from '../../config/firebase'
+import { db, auth } from '../../config/firebase'
 import React from 'react'
 
 const Booking = ({ navigation, route }) => {
+    const user = auth.currentUser.email
+    const [guests, setGuests] = React.useState()
+    const [date, setDate] = React.useState(new Date())
+    const [open, setOpen] = React.useState(false)
 
     React.useEffect(() => {
         console.log(route.params)
     }, [])
+
+    function handleBooking() {
+        db.collection('Bokkings').doc(user).set({
+            hotel: route.params.name,
+            guest: guests,
+            check_in: date
+        }).then(() => {
+            console.log("Document successfully written!");
+        })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+            });
+    }
 
     return (
         <View style={styles.container}>
@@ -91,17 +108,17 @@ const Booking = ({ navigation, route }) => {
                 </View>
             </ImageBackground>
             <Button
-                    title={'Book'}
-                    containerStyle={{
-                        width: 180,
-                        marginHorizontal: 50,
-                        marginVertical: 10,
-                        top: '10%',
-                        elevation: 6
-                    }}
-                    titleStyle={{ fontFamily: 'Roboto_300Light',color:'#FFFF' }}
-                    buttonStyle={{ backgroundColor: '#FF9F45' }}
-                />
+                title={'Book'}
+                containerStyle={{
+                    width: 180,
+                    marginHorizontal: 50,
+                    marginVertical: 10,
+                    top: '10%',
+                    elevation: 6
+                }}
+                titleStyle={{ fontFamily: 'Roboto_300Light', color: '#FFFF' }}
+                buttonStyle={{ backgroundColor: '#FF9F45' }}
+            />
         </View>
     )
 }
