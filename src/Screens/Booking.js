@@ -1,4 +1,4 @@
-import { View, Text, ImageBackground, TouchableOpacity } from 'react-native'
+import { View, Text, ImageBackground, TouchableOpacity, ToastAndroid } from 'react-native'
 import { Icon, FAB, Button } from 'react-native-elements'
 import { styles } from '../../assets/styles/styles'
 import { db, auth } from '../../config/firebase'
@@ -9,22 +9,58 @@ const Booking = ({ navigation, route }) => {
     const [guests, setGuests] = React.useState()
     const [date, setDate] = React.useState(new Date())
     const [open, setOpen] = React.useState(false)
+    const [increment, setIncrement] = React.useState(0)
+    const [disabledDecrement, setDisabledDecrement] = React.useState(false)
+    const [disabledIncrement, setDisabledIncrement] = React.useState(false)
 
     React.useEffect(() => {
         console.log(route.params)
     }, [])
 
     function handleBooking() {
-        db.collection('Bokkings').doc(user).set({
-            hotel: route.params.name,
-            guest: guests,
-            check_in: date
-        }).then(() => {
-            console.log("Document successfully written!");
-        })
-            .catch((error) => {
-                console.error("Error writing document: ", error);
-            });
+        // db.collection('Bokkings').doc(user).set({
+        //     hotel: route.params.name,
+        //     guest: guests,
+        //     check_in: date
+        // }).then(() => {
+        //     console.log("Document successfully written!");
+        // })
+        //     .catch((error) => {
+        //         console.error("Error writing document: ", error);
+        //     });
+        navigation.navigate("BookingSuccessFull")
+    }
+
+    function add() {
+        setIncrement(increment + 1)
+        if (increment > 3  && disabledIncrement == false) {
+            ToastAndroid.show(
+                `⚠️ ${increment} maximum guest! ⚠️`,
+                ToastAndroid.BOTTOM
+            )
+            setDisabledIncrement(true)
+            setDisabledDecrement(false)
+        } else {
+            setDisabledIncrement(false)
+        }
+
+    }
+
+    function reduce() {
+        setIncrement(increment - 1)
+
+        if (increment < 2 && disabledDecrement == false) {
+            ToastAndroid.show(
+                `⚠️ please add more than ${increment} guests! ⚠️`,
+                ToastAndroid.BOTTOM
+            )
+            setDisabledDecrement(true)
+            setDisabledIncrement(false)
+        } else {
+            setDisabledDecrement(false)
+        }
+
+
     }
 
     return (
@@ -70,21 +106,24 @@ const Booking = ({ navigation, route }) => {
                         <Text style={{ fontFamily: 'Roboto_300Light', fontSize: 25, color: '#8B8B8B' }}>Number of guests</Text>
                         <View style={{ flexDirection: 'row', left: '5%' }}>
                             <FAB
+                                disabled={disabledIncrement}
                                 visible={true}
                                 icon={{ name: 'plus', type: 'font-awesome', color: '#FFFF' }}
                                 color="#FF9F45"
                                 size='small'
                                 style={{ right: '8%' }}
-                            // onPress={() => navigation.goBack()}left:'1%',right:'1%'
+                            onPress={add}
+
                             />
-                            <Text style={{ fontFamily: 'Roboto_300Light', fontSize: 25, color: '#8B8B8B' }}>0</Text>
+                            <Text style={{ fontFamily: 'Roboto_300Light', fontSize: 25, color: '#8B8B8B' }}>{increment}</Text>
                             <FAB
+                                disabled={disabledDecrement}
                                 visible={true}
                                 icon={{ name: 'minus', type: 'font-awesome', color: '#FFFF' }}
                                 color="#FF9F45"
                                 size='small'
                                 style={{ left: '8%' }}
-                            // onPress={() => navigation.goBack()}
+                            onPress={reduce}
                             />
                         </View>
                     </View>
@@ -118,6 +157,7 @@ const Booking = ({ navigation, route }) => {
                 }}
                 titleStyle={{ fontFamily: 'Roboto_300Light', color: '#FFFF' }}
                 buttonStyle={{ backgroundColor: '#FF9F45' }}
+                onPress={handleBooking}
             />
         </View>
     )

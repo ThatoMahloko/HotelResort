@@ -13,11 +13,9 @@ export default function Login({ navigation }) {
     const [errorMessage, setErrorMessage] = React.useState()
     const load = () => {
         setLoading(true)
-        setTimeout(function () {
             navigation.navigate("BottomNavigationPages")
             setLoading(false)
             console.log("hjhjhjh")
-        }, 2000)
 
 
     }
@@ -67,7 +65,6 @@ export default function Login({ navigation }) {
         } else {
             console.log("hello", email + password)
             setLoading(true)
-            setTimeout(function () {
                 auth.signInWithEmailAndPassword(email, password)
                     .then((userCredential) => {
                         const user = userCredential.user;
@@ -84,7 +81,6 @@ export default function Login({ navigation }) {
                         }
                         setLoading(false);
                     })
-            }, 2000)
         }
 
     }
