@@ -2,13 +2,19 @@ import { View, Text, ImageBackground, TouchableOpacity } from 'react-native'
 import { Icon, FAB, Button } from 'react-native-elements'
 import { styles } from '../../assets/styles/styles'
 import { db, auth } from '../../config/firebase'
+import DateTimePickerModal from 'react-native-datetimepicker-modal'
+import moment from 'moment';
 import React from 'react'
 
 const Booking = ({ navigation, route }) => {
     const user = auth.currentUser.email
     const [guests, setGuests] = React.useState()
-    const [date, setDate] = React.useState(new Date())
-    const [open, setOpen] = React.useState(false)
+    const [checkInDate, setCheckIndate] = React.useState(new Date())
+    const [checkOutDate, setCheckOutdate] = React.useState(new Date())
+    const [show, showModal] = React.useState(false);
+    const [show_, showModal_] = React.useState(false);
+    const toggle = () => showModal(!show);
+    const toggle_ = () => showModal_(!show_);
 
     React.useEffect(() => {
         console.log(route.params)
@@ -45,10 +51,10 @@ const Booking = ({ navigation, route }) => {
 
                 {
                     <>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={toggle} >
                             <Text style={{ fontFamily: 'Roboto_300Light', fontSize: 25, color: '#8B8B8B' }}>Select  check-in date</Text>
                         </TouchableOpacity>
-                        <Text style={{ fontFamily: 'Roboto_300Light', fontSize: 25, color: '#8B8B8B', marginTop: '5%', bottom: '5%' }}></Text>
+                        <Text style={{ fontFamily: 'Roboto_300Light', fontSize: 25, color: '#8B8B8B', marginTop: '5%', bottom: '5%' }}>{checkInDate ? moment(checkInDate).format('MMMM DD, YYYY') : '-'}</Text>
 
                     </>
 
@@ -57,11 +63,10 @@ const Booking = ({ navigation, route }) => {
 
                 {
                     <>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={toggle_}>
                             <Text style={{ fontFamily: 'Roboto_300Light', fontSize: 25, color: '#8B8B8B' }}>Select  check-out date</Text>
                         </TouchableOpacity>
-                        <Text style={{ fontFamily: 'Roboto_300Light', fontSize: 25, color: '#8B8B8B', marginTop: '5%', bottom: '5%' }}></Text>
-
+                        <Text style={{ fontFamily: 'Roboto_300Light', fontSize: 25, color: '#8B8B8B', marginTop: '5%', bottom: '5%' }}>{checkOutDate ? moment(checkOutDate).format('MMMM DD, YYYY') : '-'}</Text>
                     </>
                 }
 
@@ -119,6 +124,20 @@ const Booking = ({ navigation, route }) => {
                 titleStyle={{ fontFamily: 'Roboto_300Light', color: '#FFFF' }}
                 buttonStyle={{ backgroundColor: '#FF9F45' }}
             />
+            <DateTimePickerModal
+                value={checkInDate}
+                onChange={(event, date) => setCheckIndate(date)}
+                show={show}
+                toggle={toggle}
+            >
+            </DateTimePickerModal>
+            <DateTimePickerModal
+                value={checkOutDate}
+                onChange={(event, date) => setCheckOutdate(date)}
+                show={show_}
+                toggle={toggle_}
+            >
+            </DateTimePickerModal>
         </View>
     )
 }
