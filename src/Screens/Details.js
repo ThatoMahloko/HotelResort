@@ -47,10 +47,10 @@ const Details = ({ navigation, route }) => {
         }
     }
 
-    React.useState(() => {
+    React.useEffect(() => {
         console.log(route.params.url)
         setShareUrl(route.params.url)
-    })
+    },[])
 
     function toggleDetails() {
         if (toggleDetail == false && paddingBottomButtons == 0 && detailButtonText == "Detail" && disabledFascilities == false && disabledReview == false) {

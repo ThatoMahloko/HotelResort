@@ -12,11 +12,9 @@ export default function SignUp({ navigation }) {
 
     const load = () => {
         setLoading(true)
-        setTimeout(function () {
             navigation.navigate('BottomNavigationPages')
             setLoading(false)
 
-        }, 2000)
 
 
     }
@@ -24,7 +22,6 @@ export default function SignUp({ navigation }) {
     const SignUpAuth = () => {
         console.log(auth.currentUser.email)
         setLoading(true)
-        setTimeout(function () {
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
@@ -39,7 +36,6 @@ export default function SignUp({ navigation }) {
             }else{
                 console.log('err')
             }
-        }, 2000)
     }
     return (
         <View style={styles.container}>
