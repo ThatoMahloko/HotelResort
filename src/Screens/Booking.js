@@ -1,7 +1,7 @@
 import { View, Text, ImageBackground, TouchableOpacity, ToastAndroid, ActivityIndicator } from 'react-native'
 import { Icon, FAB, Button } from 'react-native-elements'
 import { styles } from '../../assets/styles/styles'
-import { db, auth,firebase } from '../../config/firebase'
+import { db, auth, firebase } from '../../config/firebase'
 import DateTimePickerModal from 'react-native-datetimepicker-modal'
 import moment from 'moment';
 import React from 'react'
@@ -36,12 +36,14 @@ const Booking = ({ navigation, route }) => {
             )
         } else {
             setLoading(true)
-            firebase.firestore().collection('Hotels').doc("ApogeeBoutiqueHotel&Spa").collection("Bookings").add({
+            setGuests(increment)
+            firebase.firestore().collection('Hotels').doc("ApogeeBoutiqueHotel&Spa").collection("Bookings").doc(user).set({
                 hotel: `${route.params.name}`,
-                guest: `${guests}`,
+                guest: `${increment}`,
                 check_in: `${checkInDate}`,
                 check_out: `${checkOutDate}`,
                 guest_email: `${user}`,
+                alert_status:'warning'
             }).then(() => {
                 console.log("Document successfully written!");
                 setLoading(false)
